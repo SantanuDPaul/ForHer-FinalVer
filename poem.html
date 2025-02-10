@@ -1,0 +1,106 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Poem</title>
+	<!-- css style sheet -->
+	<link href="css/poem.css" rel="stylesheet">
+    <!-- fonts -->
+<link href="https://fonts.googleapis.com/css?family=Shadows+Into+Light" rel="stylesheet">
+
+
+
+</head>
+	
+<body>
+	<audio id="bgMusic" loop>
+		<source src="./music/Sparkle.mp3" type="audio/mpeg">
+	</audio>
+
+  <div class = "wrap">
+    <div class = "postcard">
+
+          <span id = "dear">My First</span>
+   
+			<span id = "message-left">
+				<strong class="text"></strong>
+				<p>Whenever I see you,
+				  <br>it's always like the first time-
+				  <br>that day on the corridor, 
+				  <br>when the world blurred around you, 
+				  <br>and only you shone,
+				  <br>bright among the crowd, 
+				  <br>different, perfect, effortless.
+				  </p>
+				  
+				  <p>And then there was me,
+				  <br>an introverted wanderer,
+				  <br>circling your orbit,
+				  <br>finding purpose in hallways and classrooms,
+				  <br>where my only lesson was the hope 
+				  <br>of catching a glimpse of you.
+				  </p>
+			</span>
+         
+			<span id= "mail" >
+				<img id= "mail_stamp" src = "images/stamp.png" alt="stamp" >
+				<span id= "from"> </span>
+
+			</span>
+			
+   
+      <span id="message-right">
+		<p>Atleast now I can meet you,
+			<br>talk to you,
+			<br>even if just for a fleeting moment.
+			</p>
+
+			<p>My words may sound foolish, maybe even cliché,
+			<br>And I know times are hard for you
+			<br>but I'll wait-
+			</p>
+
+			<p>We may not be there yet,
+			<br>but something tells me-
+			<br>this is worth the wait.
+			</p>
+
+			<p>Just know this
+			<br>For me,
+			<br>You're my first, my Valentine..
+			</p>
+
+			<p>~lame._.onee</p>
+	  </span>
+    </div>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        let audio = document.getElementById("bgMusic");
+
+        // Restore audio state from localStorage
+        if (localStorage.getItem("isPlaying") === "true") {
+            audio.currentTime = localStorage.getItem("audioTime") || 0;
+            audio.play().catch(() => {
+                console.log("Autoplay blocked. Waiting for user interaction.");
+            });
+        }
+
+        // Save progress before switching pages
+        window.addEventListener("beforeunload", () => {
+            localStorage.setItem("audioTime", audio.currentTime);
+            localStorage.setItem("isPlaying", !audio.paused);
+        });
+
+        // Fix autoplay issue: Play on user click
+        document.addEventListener("click", () => {
+            if (audio.paused) {
+                audio.play();
+            }
+        });
+    });
+</script>
+  
+
+</body>
+</html>
