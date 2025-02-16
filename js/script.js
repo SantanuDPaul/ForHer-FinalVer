@@ -81,36 +81,60 @@ papers.forEach(paper => {
   p.init(paper);
 });
 
-function openMiniWindow() {
-  document.getElementById("miniWindow").style.display = "block";
-  document.getElementById("overlay").style.display = "block";
-}
+// document.addEventListener("DOMContentLoaded", () => {
+//   let audio = document.getElementById("bgMusic");
 
-function closeMiniWindow() {
-  document.getElementById("miniWindow").style.display = "none";
-  document.getElementById("overlay").style.display = "none";
-}
+//   // Restore audio state from localStorage
+//   if (localStorage.getItem("isPlaying") === "true") {
+//       audio.currentTime = localStorage.getItem("audioTime") || 0;
+//       audio.play().catch(() => {
+//           console.log("Autoplay blocked. Waiting for user interaction.");
+//       });
+//   }
+
+//   // Save progress before switching pages
+//   window.addEventListener("beforeunload", () => {
+//       localStorage.setItem("audioTime", audio.currentTime);
+//       localStorage.setItem("isPlaying", !audio.paused);
+//   });
+
+//   // Fix autoplay issue: Play on user click
+//   document.addEventListener("click", () => {
+//       if (audio.paused) {
+//           audio.play();
+//       }
+//   });
+// });
 document.addEventListener("DOMContentLoaded", () => {
   let audio = document.getElementById("bgMusic");
 
-  // Restore audio state from localStorage
-  if (localStorage.getItem("isPlaying") === "true") {
-      audio.currentTime = localStorage.getItem("audioTime") || 0;
-      audio.play().catch(() => {
+  let playPromise = audio.play();
+  
+  if (playPromise !== undefined) {
+      playPromise.then(() => {
+          console.log("Music autoplayed successfully!");
+      }).catch(() => {
           console.log("Autoplay blocked. Waiting for user interaction.");
+          
+          document.addEventListener("click", () => {
+              if (audio.paused) {
+                  audio.play();
+              }
+          }, { once: true }); 
       });
   }
 
-  // Save progress before switching pages
+ 
+  if (localStorage.getItem("isPlaying") === "true") {
+      audio.currentTime = localStorage.getItem("audioTime") || 0;
+      audio.play().catch(() => {
+          console.log("Autoplay blocked. User interaction needed.");
+      });
+  }
+
+ 
   window.addEventListener("beforeunload", () => {
       localStorage.setItem("audioTime", audio.currentTime);
       localStorage.setItem("isPlaying", !audio.paused);
-  });
-
-  // Fix autoplay issue: Play on user click
-  document.addEventListener("click", () => {
-      if (audio.paused) {
-          audio.play();
-      }
   });
 });
